@@ -917,63 +917,451 @@ public class Salary : MonoBehaviour {
 <hr>
 
 ##15. 인덱서
+배열의 Index값을 이용한 로직을 추가로 구현, 응용 해보자
+
+```c#
+// 배열 변수 선언할 클래스 선언
+public class Record
+{
+    // 예시로 int를 사용했지만 string이나 Array List 같은 경우에도 Index값을 사용 가능한 모든것에 인덱서를 쓸 수 있다.
+    public int[] temp = new int[5];
+    // 인덱서
+    public int this[int index]
+    {
+        get
+        {
+            if(index >= temp.Length)
+            {
+                Debug.Log("인덱스가 너무 큼");
+                return 0; 
+            }
+            else
+            {
+                return temp[index];
+            }
+        }
+        // 인덱스의 크기보다 큰 값을 넣을 경우 디버그 메세지 출력
+        set
+        {
+            if(index >= temp.Length)
+            {
+                Debug.Log("인덱스 값이 너무큼");
+            }
+            else
+            {
+                temp[index] = value;
+            }
+        }
+    } 
+}
+
+// 디폴트 클래스
+public class This : MonoBehaviour {
+    // 위에서 선언한 배열 클래스 사용
+    Record record = new Record();
+    
+    void Start()
+    {
+        // 인덱스의 크기는 5 이기 때문에 0 ~ 4 인데 5값을 넣으면 오류가 발생
+        record[5] = 5;   
+        
+        record[3] = 5;
+    }
+}
+
+이 강의에서 말하는 `인덱스`는 배열 내부의 값이고 `인덱서`는 인덱스 값을 수정 할 수 있도록
+
+기본 디폴트 설정된 get{}과 set{}을 펼쳐서 범위 지정이나 조건을 추가 하도록 설정한것이다.
+
+실제로 메인 클래스에는 사용 선언 한줄 외에 내부 코드는 record[] = 값; 코드 정도 들어간다
+
+한번 듣고는 이해가 잘 안가니 배열을 깊게 다룰때 나중에 다시 들어보자
+
+```
 
 <hr>
 
 ##16. 인터페이스
+다중 상속을 위한 인터페이스 기능 강의 끝이 다가올수록 어려워지는 느낌..?
+
+우선 추상 메소드와 추상 클래스를 생성한다 (상속 개념과 추상 함수 기능이 기억 안나면 13번으로 돌아가자)
+```c#
+// 추상 클래스 A
+abstract public class A : MonoBehaviour
+{
+    // 추상 메소드 Abc()
+    abstract public void Abc();
+}
+// 추상 클래스 B도 만들어준다
+abstract public class B : MonoBehaviour
+{
+    // 추상 메소드 Bbc()
+    abstract public void Bbc();
+}
+
+// 디폴트 클래스 였던 This는 A 부모 클래스의 자식클래스로 사용한다 그러다 B까지 상속시키면 오류가 뜬다
+public class This : A, B {
+    
+    public override void Abc()
+    {
+        print("");
+    }
+}
+```
+여러 개를 상속 받게 되면 오류가 발생 한다 여기서 사용할 것이 바로 인터페이스 기능
+
+다시 방금 스크립트로 돌아가자
+```c#
+// 추상 클래스 A
+abstract public class A : MonoBehaviour
+{
+    // 추상 메소드 Abc()
+    abstract public void Abc();
+}
+// 추상 클래스 B를 인터페이스 ITest로 바꿔준다
+interface ITest
+{
+    // 추상 메소드 Bbc()
+    abstract public void Bbc();
+}
+
+// 이번엔 A와 함께 위에서 만든 ITest를 상속시킨다
+public class This : A, ITest {
+    
+    // 추상 클래스는 override 가 있지만
+    public override void Abc()
+    {
+        print("Abc");
+    }
+    // 인터페이스에는 override 가 없다 또한 인터페이스에는 변수를 사용 할 수 없다 
+    // 함수, 프로퍼티, 인덱서, 이벤트만 가능하며 뼈대만 제공하기 때문에 기능을 완성 시키면 안되고 선언만 해야한다
+    public void Bbc()
+    {
+        print("Bbc");
+    }
+}
+```
+추가로 인터페이스를 인터페이스로 상속시켜 사용 할 수 도있다
+```c#
+interface ITest
+{
+    abstract public void Bbc();
+}
+// ITest2 는 ITest를 상속 받았다
+interface ITest2 : ITest
+{
+
+}
+// 디폴트 클래스에 A 클래스와 ITest2를 상속 시켜주면 ITest2에 포함된 ITest도 상속 받는다
+public class This : A, ITest2 {
+
+}
+```
+C#엔 다중 상속이 안되서 여러개의 클래스를 상속 받아 사용 해야 할땐 인터페이스 기능을 떠올려야 겠다
 
 <hr>
 
 ##17. 형식 매개 변수T
+어떤 타입의 매개 변수가 올지 모를때 사용하는 일반화 형식 매개 변수 T를 사용 해보자
 
+```c#
+// 디폴트 클래스
+public class This : MonoBehaviour {
+
+    void Print(int value)
+    {
+        print(value);
+    }
+    
+    void Print(string value)
+    {
+        print(value);
+    }
+    
+    void Print(float value)
+    {
+        print(value);
+    }
+    
+    void Start()
+    {
+        Print("abc"); // 위에선 이름이 같은 함수를 3개 선언 했지만 매개변수로 구분하여 호출값이 달라진다
+    }
+}
+```
+형식에 따라 함수를 여러 가지 쓰기가 싫을때 형식 매개 변수를 사용한다
+```c#
+public class This : MonoBehaviour {
+    
+    // where T : class, struct같이 형식을 지정해 줄 수도 있다
+    void Print<T>(T value) where T : class
+    {
+        print(value);
+    }
+    
+    void Start()
+    {
+        Print<string>("abc"); // 이와같이 문자열을 지정해서 사용할 수 있다
+        Print<float>(4.5f);
+    }
+}
+```
+사용하는 방법 추가 예시
+```c#
+public class Abc<T>
+{
+    // 변수 두개 var와 배열값을 가진 array에 형식 매개 변수 T를 사용
+    public T var;
+    public T[] array;
+}
+
+public class Test : MonoBehaviour {
+    
+    // 원하는 형식을 지정해서
+    Abc<string> a;
+    Abc<float> b;
+    
+    void Start()
+    {
+        // 출력할때 지정한 형식으로 출력
+        a.var = "abc";
+        b.var = 4.5f;
+        a.array = new string[1];
+        b.array = new float[1];
+        a.array[0] = "abc";
+        b.array[0] = 4.5f;
+    }
+}
+```
+어떤 기능인지 감이 오긴 하는데 요 몇개의 강의들이 5분 ~ 7분 정도라 뭔가 간단하게 넘어 가는 기분 이다
+간단히 익혀 두고 나중에 상세 하게 다뤄 보자
 <hr>
 
 ##18. 람다식
+델리게이트에서 유용하게 쓸 수 있는 '무명 메서드' 그리고 그것을 간단하게 만든 람다식!
+
+다른 예제 강의나 영상에서도 자주 나오는 람다식을 드디어 배워 보자
+
+일단 예제 스크립트를 만들어보자
+```c#
+public class This : MonoBehaviour
+
+    int a = 5;
+    int b = 5;
+    
+    int sum;
+    
+    void Add()
+    {
+        sum = a + b;
+    }
+    
+    void Back()
+    {
+        sum = 0;
+    }
+    
+    delegate void MyDelegate(T a, T b);
+    MyDelegate<int> myDelegate;
+    
+    void Start()
+    {
+       myDelegate += (int a, int b) => print(a+b); // 람다식!
+       
+       myDelegate(3, 5); 
+    }
+```
+
+
+
 
 <hr>
 
 ##19. Action과 Func
+이번 강의도 델리게이트를 활욯하기 위한 기능이다 바로 스크립트를 보자
+
+```c#
+// 이번 강의에선 System 네임스페이스가 필요하다
+using System;
+
+// 디폴트 클래스
+public class This : MonoBehaviour {
+    
+    // string형식으로 델리게이트 생성, 형식 매개변수 2개를 지정
+    delegate string MyDelegate<T1, T2>(T1 a, T2 b);
+    // 매개변수 형식은 둘다 int 값으로 지정해준다
+    MyDelegate<int, int> MyDelegate;
+    
+    // Action 기능 자체가   
+    // delegate void MyDelegate<T1, T2>(T1 a, T2 b); 를 정의 하고 있다.
+    Action<int, int> myDelegate2;
+    
+    // 앞의 값 두개는 T1 T2를 나타내고 마지막 값은 맨앞의 string 형식을 지정하고있다
+    Func<int, int, string> myDelegate3;
+    
+    void Start()
+    {
+        // 람다식을 사용 지정한 앞의 두값은 int 값 뒤의 3번째 값은 지정된 string사용
+        myDelegate3 = (int a, int b) => { int sum = a + b; return sum + "이 리턴되었습니다"; };
+        
+        // 출력 값 8 이 리턴되었습니다 가 정상출력 된다
+        print(myDelegate3(3, 5));
+    }
+}
+```
+복잡 했던 델리게이트 값을 이제 Action이나 Func 시스템 기능을 사용해서 편하게 받아 사용 할 수 있게 되었다
 
 <hr>
 
 ##20. 예외 처리
+오류가 발생하지 않게 코드의 특정부분에서 예외 처리를 해주는 방법을 배워보자
 
+바로 스크립트
+
+```c#
+// 이번에도 System 네임스페이스가 필요하다
+using System;
+
+public class This : MonoBehaviour {
+    int a = 5;
+    int b = 0;
+    int c;
+
+    void Start()
+    {
+        try // 오류가 의심되는 코드 부분
+        {
+            // 5를 0으로 나누면 당연히 오류가 발생한다
+            c = a / b; 
+        }
+        catch(DivideByZeroException ie) // 잡아낼 부분
+        {
+            print(ie)
+            b = 1;
+            c = a / b;
+            
+        }
+        catch(NullReferenceExeption ie) // catch는 여러개를 사용 가능하다
+        {
+        
+        }
+        finally // 오류가 나던 말던 출력할 부분
+        {
+            print(c);
+        }
+        thorw new Exception("일부러 오류를 발생시킴");
+    }
+}
+```
+이번 강좌에는 오류를 검증하는 기능과 실행 시키면 안되는 특정 부분에 일부러 오류를 발생 시킬 수 있는 기능을 배웠다
 <hr>
 
 ##21. 코루틴
+드디어 마지막 강좌 코루틴! 바로 스크립트 들어갑니다
+
+```c#
+// 디폴트 클래스
+public class This : MonoBehaviour {
+
+    void Start()
+    {
+        LoopA();
+        LoopB();   
+    }
+    
+    void LoopA()
+    {
+        for(int i = 0; i < 100; i++)
+        {
+            print("i의 값 = " + i);
+        }
+    }
+    
+    void LoopB()
+    {
+        for(int x = 0; i < 100; x++)
+        {
+            print("x의 값 = " + x);
+        }
+    }
+}
+```
+기존에 루프 함수 두개를 실행시키면 동시에 실행되는게 아닌 순차 실행을 한다
+
+하지만 우리는 동시 실행을 시키기 위해 병렬 실행하는 코루틴을 사용 해보자
+```c#
+// 디폴트 클래스
+public class This : MonoBehaviour {
+   
+   // 코루틴 변수 선언
+   Coroutine myCoroutine1;
+   Coroutine myCoroutine2;
+   
+    void Start()
+    {
+        // 실행 코루틴
+        myCoroutine1 = StartCoruoutine(LoopA());
+        // 이번엔 문자열로도 해본다
+        // 문자열도 같은 기능은 하지만 성능이 떨어지며 파라미터도 최대 한개만 사용 가능하다
+        StartCoroutine("LoopB");
+        // 정지 코루틴
+        StartCoroutine(Stoooop());   
+    }
+    
+    // 코루틴 함수로 변경
+    IEnumrator LoopA()
+    {
+        for(int i = 0; i < 100; i++)
+        {
+            print("i의 값 = " + i);
+            // 1초 대기 시간 후 다시 동작
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    
+    IEnumrator LoopB()
+    {
+        for(int x = 0; i < 100; x++)
+        {
+            print("x의 값 = " + x);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    
+    // 코루틴 멈추는 코루틴
+    IEnumrator Stoooop()
+    {
+         // 2초 뒤에 스탑코루틴 실행
+         yield return new WaitForSeconds(2f);
+         StopCoroutine(myCoroutine1);
+         yield return new WaitForSeconds(2f);
+         StopCoroutine("LoopB");
+         
+         // 모든 코루틴을 실행 중지
+         StopAllCoroutines();
+    }
+}
+```
+코루틴은 실제로 병렬 실행이 되지는 않는다 그렇게 보이기 위한 눈속임 같은 역할이라고 한다
 
 
 <hr>
 
-<br>
 
-<br>
-
-
-<br>
-
-
-<!-- Heading 
 # 후기
-이번 포스팅은 여기까지 입니다.
 
-결국 저의 첫 포스팅은 뒤로가기 한번으로 블로그 포스팅 1시간 반을 날려먹은 매콤한 경험을 했지만
+드디어 21강 전부가 끝났습니다 총 3일 걸렸는데 집중 했으면 하루 이틀도 가능했을것 같지만
 
-MarkDown이라는 Fun하고 Cool하고 Sexy한 언어를 새로 배우게 되었네요
+머리가 터지는걸 방지 했습니다 그리고 다 적고 나서 드는 생각이 왜 이걸 한번에 업로드 할려고 한걸까 입니다
 
-
-역시 실수는 새로운 기회입니다 :wink:
-
+오타도 있고 틀린내용도 있을 수 있지만 제가 기억안나서 뒤적거릴땐 유용하게 쓸것 같습니다
 
 <br>
 
 ## 추가 자료
 
-위 기능들 말고도 더 많은 기능들이 있겠지만 게으른 저는 여기까지 하겠습니다.
+<!-- Link -->
+밥먹으면서 다른 자료를 찾아 보다가 **[눈코딩](https://www.youtube.com/watch?v=Bdcip13ga5g&list=PLTFRwWXfOIYBmr3fK17E0VhKPyYrGy75z)**
+이분 영상을 보게 되었는데 이번에 학습한 내용을 복습하기 좋을것 같습니다
 
-필요하신 분들은 여기로 가보세요~
-
-[heropy님의 블로그](https://heropy.blog/2017/09/30/markdown/)  MarkDown 사용법 총정리
-
--->
 
