@@ -192,7 +192,7 @@ name: 임꺽정, damage: 2, hp: 12/12
 
 정적 메서드에서 비정적 필드에 접근 할 수 없습니다
 
-![img_2.png](img_2.png)
+![image description](https://imgur.com/QzJktlg.png)
 
 
 이 때문에 그동안 Main메서드에서 비정적 메서드를 호출 하거나
@@ -201,18 +201,18 @@ name: 임꺽정, damage: 2, hp: 12/12
 
 또한 정적 맴버는 클래스 이름으로 엑세스 해야 합니다
 
-![img_1.png](img_1.png)
+![image description](https://imgur.com/PdGsTPe.png)
 
 이제 정적 변수를 정의해봅니다.
 
 변수 타입 앞에 static 한정자를 붙여줍니다
 
-![img_3.png](img_3.png)
+![image description](https://imgur.com/AaxemvB.png)
 
 이후 반환 타입 앞에 static 한정자를 붙여줍니다
 
 정적 생성자는 정적 필드를 초기화 하거나 특정 작업을 한번만 수행 해야 하는데 사용됩니다
-![img_4.png](img_4.png)
+![image description](https://imgur.com/Uto7t5y.png)
 
 **정적 생성자는 엑세스 한정자를 사용할 수 없으며 매개변수를 정의할 수 없습니다**
 
