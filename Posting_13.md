@@ -282,8 +282,114 @@ public class TriggerEvent : MonoBehaviour
 
 <br>
 
+**게임 오브젝트 생성 함수**
 
+게임 내에서 복제 생성을 하기 위해서는 원본이 되는 복제 생성이 필요합니다
 
+여기서 원본이 되는 오브젝트는 프리팹을 사용합니다
+
+오브젝트를 생성하고 이미지나 여러가지 설정을 한 후 Hierarchy창에서 Project 폴더로 옮기면
+
+프리팹이 생성 됩니다
+
+그리고 다시 Project 창에서 Hierarchy창으로 복제해서 생성합니다
+
+물론 앞으로는 C# 프로그래밍을 통해 생성하게 될 것 입니다
+
+```c#
+public class ObjectSpawner : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject boxPrefab;
+    
+    private void Awake()
+    {
+        // Instantiate(GameObject original, Vector3 position, Quaternion rotation);
+        // original 프리팹을 복제해서 생성하고 생성된 복제본의 위치를 position으로 회전을 rotation으로 설정
+        Instantiate(boxPrefab, new Vector3(3, 3, 0), Quaternion.identity);
+    }
+}
+```
+회전 정보를 나타내고 연산하는 방식은 오일러(Euler)와 쿼터니온(Quaternion)이 있습니다
+
+![img_20.png](img_20.png)
+
+**Instatiate() 활용 예제**
+
+신나게 예제를 따라하다보니 글 작성을 못하고 있었네요 코드 내에 주석으로 설명을 첨부 합니다
+
+![img_21.png](img_21.png)
+
+그리고 이를 실행 하게되면 x값과 y값이 같은 대각선 라인이 생성되지 않는것을 볼 수 있습니다
+
+![img_22.png](img_22.png)
+
+여러가지 모양 해보기
+
+![img_23.png](img_23.png)
+
+다음은 프리팹중 임의의 프리팹이 생성되도록 해보겠습니다
+
+![img_24.png](img_24.png)
+
+라이더가 Random 이 다른 Random이 되는 이슈가 있네요
+
+실행 결과 입니다
+
+![img_25.png](img_25.png)
+
+매번 결과가 다르게 나옵니다
+
+다음은 스폰 위치도 랜덤으로 바꿔 보겠습니다
+
+생성 위치값도 랜덤으로 해준 뒤
+![img_27.png](img_27.png)
+
+실행 결과 입니다
+
+![img_28.png](img_28.png)
+
+다음은 스폰포인트를 지정하여 생성을 해보도록 하겠습니다
+
+먼저 저번 시간에 사용한 움직이는 스크립트를 조금 수정해서 만듭니다
+
+![img_29.png](img_29.png)
+
+그리고 오브젝트 스포너의 코드를 수정합니다
+
+![img_30.png](img_30.png)
+
+내용중에 삼항 연산자가 있습니다
+
+![img_31.png](img_31.png)
+
+그리고 최종 수정 입니다 사진엔 변수가 짤렸지만 가운데가 중요하니 내용만 보겠습니다
+
+![img_32.png](img_32.png)
+
+결과 실행 화면
+
+![img_33.png](img_33.png)
+
+그리고 플레이어를 추가하고 플레이어 스크립트도 작성합니다
+
+![img_34.png](img_34.png)
+
+실행 화면입니다
+
+![img_35.png](img_35.png)
+
+플레이어는 정상적으로 움직이지만 아직 총알이 움직이지 않는 모습입니다
+
+코드를 수정해서 플레이어가 마지막으로 움직인 방향으로 총알을 발사하도록 합니다
+
+![img_36.png](img_36.png)
+
+최종 실행 모습입니다
+
+![img_37.png](img_37.png)
+
+**게임오브젝트 삭제 함수**
 
 
 
