@@ -483,6 +483,78 @@ Sprite Atlas를 이용하여 여러개를 넣으면 마찬가지로 1 Batches로
 
 **2D Animation 실습**
 
+저번시간에 배운대로 플레이어 이미지를 사용 해 봅시다
+
+사용할 Player_Idle Sprite 이미지의 Sprite Mode 를 Multiple로 설정 한 후 Sprite Editor로 들어가서
+
+C값에 3을 입력하여 3등분을 하여 사용합니다
+
+![img_51.png](img_51.png)
+
+그리고 마찬가지로 Die Animation도 설정해봅니다
+
+그리고 Transition 조건으로 IsDie를 파라미터로 넣는 경우 IsDie의 조건이 만족되지 않아서 바로 죽는 애니메이션이 재생되지 않습니다
+
+그리고 신경써야할건 Has Exit Time인데 아까처럼 설정해둔 조건을 만족했을때 동작을 바로 변경할지 해당 동작을 끝까지 재생하고 변경할지
+
+설정 할 수 있습니다
+
+아래는 코드를 통해 애니메이션을 파라미터로 설정하는 방법입니다
+
+![img_52.png](img_52.png)
+
+이를 통해 우리는 space키를 누르면 플레이어가 죽는 애니메이션을 실행하도록 했습니다
+
+또한 코드에 이벤트를 설정한 후 엔진내에서 이벤트 구간을 설정하면 그 구간에서 이벤트가 발생합니다
+![img_53.png](img_53.png)
+
+
+**2D TilemapEditor**
+
+Tilemap이란 타일 형태의 리소스를 배치해 게임 월드를 표현하는 방법
+
+타일맵 에디터의 구성 요소입니다
+
+![img_54.png](img_54.png)
+
+그리고 요소에 대한 설명자료입니다
+
+![img_55.png](img_55.png)
+
+TileMap Editor의 단축키입니다
+
+S는 Select하는기능
+
+M은 Move 움직일때 사용합니다
+
+B키를 눌러 브러쉬 상태가 되면 원하는 자리에 배치합니다
+
+Shift키를 누르면 사각형 모양으로 지정됩니다
+
+G키를 누르면 빈곳의 타일을 전부 메꿔줍니다
+
+그리고 물리 충돌을 위한 Collider2D와 Rigidbody2D를 넣어 완성합니다
+
+![img_56.png](img_56.png)
+
+**2D Tilemap - Extras**
+
+Github에서 2D Extras 기능을 다운받습니다
+
+현재 버젼이 달라져서 다른 링크에서 받아야합니다
+
+이를 사용한 Prefab Brush를 사용하여 생성한 프리팹을 타일맵 할때 처럼 마우스로 편하게 배치 가능합니다
+
+Animation Tile은 랜덤으로 계속 바뀌는 타일을 배치합니다
+
+그리고 가장 중요한 PipeLine tile 이것은
+
+![img_57.png](img_57.png)
+
+위치에 따라 자동으로 타일을 배치해줍니다
+
+이와 비슷한 TerrainTile이 있습니다 하지만 TerrainTile은 좀더 세부적으로 설정이 가능합니다
+
 
 ## 이번장을 마치며
 
