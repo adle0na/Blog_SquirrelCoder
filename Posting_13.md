@@ -57,7 +57,7 @@ transform.position += Vector3.right * 1 * Time.deltaTime;
 
 여기서 Time.deltaTime의 개념이 나오는데
 
-![img_14.png](img_14.png)
+![image description](https://imgur.com/SKPkZvQ.png)
 
 Update() 실행은 FPS에 따라 변화되기 때문에 이 차이를 없애기 위하여 사용합니다
 
@@ -101,9 +101,9 @@ public class Movement2D : MonoBehavior
 
 오브젝트 충돌시 발생하는 이벤트에 대해 학습합니다
 
-![img_15.png](img_15.png)
+![image description](https://imgur.com/S7hDDGN.png)
 
-![img_16.png](img_16.png)
+![image description](https://imgur.com/eDOE209.png)
 
 먼저 Circle Collider2D입니다
 
@@ -149,15 +149,15 @@ Composite Collider 2D는 다른 게임 오브젝트의 Collider 2D들을 하나�
 
 다음은 자세한 Composite Collider 2D의 사용법입니다
 
-![img_17.png](img_17.png)
+![image description](https://imgur.com/3xxUYIM.png)
 
 사용 후에는 이런 차이가 있습니다
 
-![img_18.png](img_18.png)
+![image description](https://imgur.com/GjrYXmh.png)
 
 두 오브젝트가 충돌하기 위해선 조건이 있습니다
 
-![img_19.png](img_19.png)
+![image description](https://imgur.com/tFr0Zx1.png)
 
 아까 사용했던 코드를 다시보겠습니다
 ```c#
@@ -312,88 +312,88 @@ public class ObjectSpawner : MonoBehaviour
 ```
 회전 정보를 나타내고 연산하는 방식은 오일러(Euler)와 쿼터니온(Quaternion)이 있습니다
 
-![img_20.png](img_20.png)
+![image description](https://imgur.com/qRtreRq.png)
 
 **Instatiate() 활용 예제**
 
 신나게 예제를 따라하다보니 글 작성을 못하고 있었네요 코드 내에 주석으로 설명을 첨부 합니다
 
-![img_21.png](img_21.png)
+![image description](https://imgur.com/BskaiCR.png)
 
 그리고 이를 실행 하게되면 x값과 y값이 같은 대각선 라인이 생성되지 않는것을 볼 수 있습니다
 
-![img_22.png](img_22.png)
+![image description](https://imgur.com/XZbhU9m.png)
 
 여러가지 모양 해보기
 
-![img_23.png](img_23.png)
+![image description](https://imgur.com/RClhYGv.png)
 
 다음은 프리팹중 임의의 프리팹이 생성되도록 해보겠습니다
 
-![img_24.png](img_24.png)
+![image description](https://imgur.com/Vf0RTU5.png)
 
 라이더가 Random 이 다른 Random이 되는 이슈가 있네요
 
 실행 결과 입니다
 
-![img_25.png](img_25.png)
+![image description](https://imgur.com/PukTcqu.png)
 
 매번 결과가 다르게 나옵니다
 
 다음은 스폰 위치도 랜덤으로 바꿔 보겠습니다
 
 생성 위치값도 랜덤으로 해준 뒤
-![img_27.png](img_27.png)
+![image description](https://imgur.com/j8M5agt.png)
 
 실행 결과 입니다
 
-![img_28.png](img_28.png)
+![image description](https://imgur.com/ZTGmJB7.png)
 
 다음은 스폰포인트를 지정하여 생성을 해보도록 하겠습니다
 
 먼저 저번 시간에 사용한 움직이는 스크립트를 조금 수정해서 만듭니다
 
-![img_29.png](img_29.png)
+![image description](https://imgur.com/Yww8X29.png)
 
 그리고 오브젝트 스포너의 코드를 수정합니다
 
-![img_30.png](img_30.png)
+![image description](https://imgur.com/YWlp8e8.png)
 
 내용중에 삼항 연산자가 있습니다
 
-![img_31.png](img_31.png)
+![image description](https://imgur.com/XBDTuCy.png)
 
 그리고 최종 수정 입니다 사진엔 변수가 짤렸지만 가운데가 중요하니 내용만 보겠습니다
 
-![img_32.png](img_32.png)
+![image description](https://imgur.com/YTsZtdV.png)
 
 결과 실행 화면
 
-![img_33.png](img_33.png)
+![image description](https://imgur.com/ogG59mU.png)
 
 그리고 플레이어를 추가하고 플레이어 스크립트도 작성합니다
 
-![img_34.png](img_34.png)
+![image description](https://imgur.com/26nzbFH.png)
 
 실행 화면입니다
 
-![img_35.png](img_35.png)
+![image description](https://imgur.com/6wi7XEK.png)
 
 플레이어는 정상적으로 움직이지만 아직 총알이 움직이지 않는 모습입니다
 
 코드를 수정해서 플레이어가 마지막으로 움직인 방향으로 총알을 발사하도록 합니다
 
-![img_36.png](img_36.png)
+![image description](https://imgur.com/7dO1X0d.png)
 
 최종 실행 모습입니다
 
-![img_37.png](img_37.png)
+![image description](https://imgur.com/K2LyRqV.png)
 
 **게임오브젝트 삭제 함수**
 
 먼저 예시로 플레이어 안의 컴포넌트를 삭제하는 코드입니다
 
-![img_39.png](img_39.png)
+![image description](https://imgur.com/EAf0SgE.png)
 
 시작하자마자 플레이어의 조작 컴포넌트가 삭제되어 조작이 불가능 해집니다
 
@@ -405,13 +405,13 @@ Player를 Destroy()함수의 매개변수로 지정하면 PlayerOjbect 자체가
 
 다음은 지정범위를 벗어나면 삭제되도록 코드를 작성 해 봅니다
 
-![img_40.png](img_40.png)
+![image description](https://imgur.com/ArDF8kQ.png)
 
 실행하면 도형들이 지정 범위를 벗어나면 삭제되는 것을 볼 수 있습니다
 
 다음은 오브젝트의 충돌시에 삭제되도록 코드 작성을 해봅니다
 
-![img_41.png](img_41.png)
+![image description](https://imgur.com/wSZAtPD.png)
 
 실행하고 벽에 쏘면 벽의 색상이 잠깐 바뀌었다 돌아옵니다
 
@@ -421,7 +421,7 @@ Player를 Destroy()함수의 매개변수로 지정하면 PlayerOjbect 자체가
 
 그 이후 기존의 Movement2D 컴포넌트를 수정합니다
 
-![img_43.png](img_43.png)
+![image description](https://imgur.com/uFEJ8Fe.png)
 
 그리고 이번에는 스페이스 키를 누르면 점프하게끔 코드를 작성합니다
 
@@ -431,11 +431,11 @@ Player를 Destroy()함수의 매개변수로 지정하면 PlayerOjbect 자체가
 
 PlayerController 스크립트
 
-![img_44.png](img_44.png)
+![image description](https://imgur.com/QwnjQOP.png)
 
 Movement 2D 스크립트
 
-![img_45.png](img_45.png)
+![image description](https://imgur.com/2WPWnEl.png)
 
 그리고 점프를 제한 하기위해 플레이어가 점프하면 작은원을 생성하고
 
@@ -443,7 +443,7 @@ Movement 2D 스크립트
 
 그리고 다중 점프를 위한 로직입니다
 
-![img_46.png](img_46.png)
+![image description](https://imgur.com/WEJLV9X.png)
 
 실행 해보면 정해둔 값만큼 점프가 가능합니다
 
@@ -451,11 +451,11 @@ Movement 2D 스크립트
 
 먼저 Draw Call과 Batches에 대해 알아봅니다
 
-![img_47.png](img_47.png)
+![image description](https://imgur.com/yqMXAI0.png)
 
 최적화의 자세한 내용은 다루지 않고 Sprite Atlas 기능 정도로 넘어갑니다
 
-![img_48.png](img_48.png)
+![image description](https://imgur.com/Skk1Dxh.png)
 
 실습을 직접 해보았는데 같은 이미지는 한개로 인식하여 아무리 똑같은 2D오브젝트가 많아도 1 Batches로 최적화 해주기 때문에
 
@@ -463,7 +463,7 @@ Sprite Atlas를 이용하여 여러개를 넣으면 마찬가지로 1 Batches로
 
 당연히 좋은 기능인 만큼 주의할 점이 있습니다
 
-![img_49.png](img_49.png)
+![image description](https://imgur.com/ZhBYLhF.png)
 
 요약하면 데이터가 많은 게임에서는 하나로 다 묶게되면 한개만 써도 묶은 데이터 전부를 사용하니
 
@@ -471,7 +471,7 @@ Sprite Atlas를 이용하여 여러개를 넣으면 마찬가지로 1 Batches로
 
 그리고 간단한 Sprite Editor 사용 방법입니다
 
-![img_50.png](img_50.png)
+![image description](https://imgur.com/7vPLvq9.png)
 
 그리고 POT 개념도 설명되는데 자세히 말고 간단히 이해해봅시다
 
@@ -489,7 +489,7 @@ Sprite Atlas를 이용하여 여러개를 넣으면 마찬가지로 1 Batches로
 
 C값에 3을 입력하여 3등분을 하여 사용합니다
 
-![img_51.png](img_51.png)
+![image description](https://imgur.com/2Q9tviu.png)
 
 그리고 마찬가지로 Die Animation도 설정해봅니다
 
@@ -501,12 +501,12 @@ C값에 3을 입력하여 3등분을 하여 사용합니다
 
 아래는 코드를 통해 애니메이션을 파라미터로 설정하는 방법입니다
 
-![img_52.png](img_52.png)
+![image description](https://imgur.com/F05bqab.png)
 
 이를 통해 우리는 space키를 누르면 플레이어가 죽는 애니메이션을 실행하도록 했습니다
 
 또한 코드에 이벤트를 설정한 후 엔진내에서 이벤트 구간을 설정하면 그 구간에서 이벤트가 발생합니다
-![img_53.png](img_53.png)
+![image description](https://imgur.com/cp0faOA.png)
 
 
 **2D TilemapEditor**
@@ -515,11 +515,11 @@ Tilemap이란 타일 형태의 리소스를 배치해 게임 월드를 표현하
 
 타일맵 에디터의 구성 요소입니다
 
-![img_54.png](img_54.png)
+![image description](https://imgur.com/VwF6ntc.png)
 
 그리고 요소에 대한 설명자료입니다
 
-![img_55.png](img_55.png)
+![image description](https://imgur.com/8PAFkW9.png)
 
 TileMap Editor의 단축키입니다
 
@@ -535,7 +535,7 @@ G키를 누르면 빈곳의 타일을 전부 메꿔줍니다
 
 그리고 물리 충돌을 위한 Collider2D와 Rigidbody2D를 넣어 완성합니다
 
-![img_56.png](img_56.png)
+![image description](https://imgur.com/uBqc8il.png)
 
 **2D Tilemap - Extras**
 
@@ -549,7 +549,7 @@ Animation Tile은 랜덤으로 계속 바뀌는 타일을 배치합니다
 
 그리고 가장 중요한 PipeLine tile 이것은
 
-![img_57.png](img_57.png)
+![image description](https://imgur.com/NTFVGEs.png)
 
 위치에 따라 자동으로 타일을 배치해줍니다
 
@@ -562,4 +562,8 @@ Animation Tile은 랜덤으로 계속 바뀌는 타일을 배치합니다
 
 몰랐던 것들도 있었고 아는것들도 확실하게 확인하게 되었습니다
 
-역시 자만은 금물입니다
+양이 생각보다 너무 많아서 며칠동안 듣다가 드디어 업로드하네요
+
+강의 내용을 블로그에 다시 업로드하니 시간이 몇배는 더 걸리네요
+
+그래도 이렇게 정리하면서 복습하니 훨씬 도움이 됩니다
