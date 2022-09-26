@@ -128,7 +128,7 @@ gitBash하여 터미널에서 init하는 개념인듯 합니다
 
 버전 관리 없이 문서를 작성하게 되는 경우엔 대학 과제처럼 이런 상황이 벌어진다
 
-![img_83.png](img_83.png)
+![image description](https://imgur.com/d1CDnaf.png)
 
 VCS는 3가지 종류로 분류되는데
 
@@ -160,7 +160,7 @@ VCS는 3가지 종류로 분류되는데
 
 **개인적으로 정리한 SVN 도식화**
 
-![img_84.png](img_84.png)
+![image description](https://imgur.com/43967Vx.png)
 
 ## 이번 과정을 마치며
 
