@@ -251,25 +251,98 @@ int main()
 int main()
 {
     int n;
-    int arr[1000];
+    int arr[100];
     
     printf("입력할 숫자의 개수 입력 : ");
+    // 배열 크기를 입력합니다
     scanf("%d", &n);
     // i 0부터 시작해서 n보다 작은 동안만 반복, ++
     for (int i = 0; i < n; i++)
     {
-        // 배열을 입력 받습니다
+        // 배열 인수를 입력 받습니다
         scanf("%d", &arr[i]);
     }
-    // n-1부터 시작해서 i가 0보다 작아질때까지 감소, --
-    for (int i = n - 1; i >= 0; i--)
-    {
-        // 입력 받은 배열 큰수부터 출력
-        printf("%d", arr[i]);
-    }
-    
 }
 ```
+
+```c++
+#include <stdio.h>
+
+int main()
+{
+    int n;
+    int arr[100];
+    
+    printf("입력할 숫자의 개수 입력 : ");
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    
+    // 최대값은 값 1칸의 배열
+    int max = arr[0];
+    // 최대값 체크 n 값 하나씩 올려가며
+    for (int i = 1; i < n; i++)
+    {
+        // 최대값 체크가 끝나면 최대값 변수에 해당 배열 값 삽입
+        if(max < arr[i]) max = arr[i];
+    }
+    
+    // 계산이 끝난 최대값 출력
+    printf("%d\n", max);
+    
+}
+
+```
+
+**22강 2차원 배열**
+
+```c++
+#include <stdio.h>
+
+int main()
+{
+    int arr[3][4] =
+    {
+        {1, 2, 3, 4}
+        {5, 6, 7, 8}
+        {9, 10, 11, 12}
+    }
+}
+```
+
+```c++
+#include <stdio.h>
+
+int main()
+{
+	int p[10][10];
+
+	// i 0부터 9까지 반복
+	for (int i = 0; i < 10; i++)
+	{
+		// j 도 같은 작업
+		for (int j = 0; j <= i; j++)
+		{
+			if (j == 0 || j == i)
+			{
+				p[i][j] = 1;
+			}
+			else
+			{
+				p[i][j] = p[i - 1][j - 1] + p[i - 1][j];
+			}
+			printf("%d ", p[i][j]);
+		}
+		printf("\n");
+	}
+}
+```
+
+**23강 문자열**
+
+
 
 
 ## 이번 과정을 마치며
