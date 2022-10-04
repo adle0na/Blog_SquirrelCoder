@@ -1,5 +1,5 @@
 <!-- Heading -->
-#  열여덟번째 도토리
+#  열일곱번째 도토리
 
 <!-- Quote -->
 > ## 언리얼 OVRlipsync Plugin을 Unreal 5.0.3에서 사용하기
