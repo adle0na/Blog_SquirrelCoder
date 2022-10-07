@@ -181,6 +181,61 @@ int main()
 
 그리고 이렇게 배운 cout과 cin은 네트워크 관련 코딩을 할때도 다시 사용할 수 있습니다
 
+### 함수와의 첫 만남
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << 1 + 2 << endl;
+    cout << 3 + 4 << endl;
+    cout << 8 + 13 << endl;
+    
+    return 0;
+}
+```
+위와 같은 경우 같은 연산을 반복하고 있습니다
+
+함수라는 것은 먼저 출력값의 데이터를 사용합니다
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+// 먼저 함수의 이름은 자세하게 적어주는게 좋습니다
+int addTwoNumbers(int num_a, int num_b)
+{
+    int sum = num_a + num_b;
+    
+    return sum;
+}
+
+int main()
+{
+    cout << addTwoNumbers(1, 2) << endl;
+    cout << addTwoNumbers(3, 4) << endl;
+    cout << addTwoNumbers(8, 13) << endl;
+    
+    return 0;
+}
+```
+
+지금 과정은 오히려 함수화 한게 복잡해 보이지만 함수내의 기능이 복잡해지면 반드시 필요한 기능입니다
+
+가령 저 연산의 기호를 +가 아니라 *으로 바꾼다면 위의 함수만 바꿔주면 동일한 기능을 하게 됩니다
+
+또한 우클릭을 누르고 rename을 사용하면 해당 함수와 같은 이름을 모두 바꿔줍니다
+
+다음은 중단점을 사용한 디버깅 방식입니다
+
+왼쪽 디버그 할지점을 선택하고 F11을 눌러 진행하다보면 함수가 있는곳으로 넘어갑니다
+
+이 개념을 잘 이해하면 재귀함수 부분에서 편해집니다
+
 ## 이번 과정을 마치며
 
 강의가 아직까진 기초적인 내용이지만 중간중간 굉장히 디테일한 내용들을 알려주시니까 만족도가 높습니다
