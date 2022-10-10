@@ -236,6 +236,373 @@ int main()
 
 이 개념을 잘 이해하면 재귀함수 부분에서 편해집니다
 
+```c++
+#include <iostream>
+
+using namespace std;
+
+// 리턴 값이 없음으로 함수 앞에 void 입력
+void printHelloworld()
+{
+    cout << "Hello World" << endl;
+    
+    return;
+    // 여기에 return을 적은 경우 반환하여 main함수로 돌아갑니다
+}
+
+int main()
+{
+    printHelloWorld();
+
+    return 0;
+}
+
+```
+
+C++에서는 함수안에서 함수를 정의 할 수 없습니다
+
+### 키워드와 식별자 이름짓기
+
+![image description](https://imgur.com/a/GEpUU1g.png)
+
+C++은 우선 이러한 키워드들이 있고 변수명을 지을때 주의 하여야한다
+
+변수 이름지을때 주의할 내용은 C#때와 동일하므로 넘어가겠습니다
+
+### 지역 범위
+
+```c++
+#include <iostream>
+
+int main()
+{
+    int x = 0;
+    {
+        // 함수명 없이 그냥 이렇게 영역 구분을 위한 중괄호를 사용해도 됩니다
+        
+        int x = 1;
+    }
+    {
+        int x = 2;
+        // 현재 지역변수로 사용되고 있기 때문에 메모리 주소가 다르고 중괄호 내에서만 인식합니다
+    }
+}
+```
+
+마찬가지로 함수내에서 선언한 변수는 그범위 내에서만 적용되며
+
+밖에서 선언되게 되면 다른 메모리를 가진 값이 됩니다
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+void doSomething(int x)
+{
+    x = 123;
+
+    cout << x << endl;
+}
+
+int main()
+{
+    int x = 0;
+
+    cout << x << endl;
+    doSomething(x);
+    cout << x << endl;
+
+    return 0;
+}
+```
+점검 문제의 출력은 0, 123, 0 이었습니다
+
+먼저 main을 살펴보면 x = 0으로 선언되어있어 0이 출력되고
+
+매개변수 x를 가진 doSomthing 함수를 보면 함수 내의 지역변수에서 x 값을 123으로 출력합니다
+
+마지막으로 다시 main함수의 전역변수인 x를 출력하면 당연히 0이 출력됩니다
+
+### 연산자와의 첫 만남
+
+**Literal** 리터럴
+
+**Operand** 피연산자
+
+**단항, 이항, 삼항**
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    int x = 2;
+    // assignment 대입연산자로 x 변수의 메모리 값에 2를 대입합니다
+    
+    // 여기서 1과 2는 리터럴 상수이고 +는 연산자입니다
+    cout << 1 + 2 << endl;
+    // 이러한 값들을 피연산자 Operand라고 합니다
+    
+    cout << "My Home" << endl;
+
+    return 0;
+}
+```
+
+단항 연산자 같은 경우 -x 한항을 가진 연산자이고
+
+이항 연산자는 1 + 2 처럼 2개의 항을가진 연산자입니다
+
+3개가 들어가면 삼항 연산자인데 조건 연산자로도 불리우며 C++의 유일한 삼항 연산자입니다
+
+예시로 int y = ( x > 0 ) ? 1 : 2; 같은 경우
+
+x 가 0보다 조건이 참일 경우 왼쪽값 1을 거짓일 경우 오른쪽값 2를 가지게 됩니다 
+
+### 기본적인 서식 맞추기
+
+우선 기본적인 입력 서식으로 탭, 줄바꿈을 언급하셨고
+
+줄바꿈의 경우 , 나 <<로 구분이 되도록합니다
+
+간단히 예쁘게 코딩하는 법의 기초를 알려주셨습니다
+
+### 선언과 정의의 분리
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << add(1, 2) << endl
+    
+    return 0;
+}
+
+int add(int a, int b)
+{
+    return a + b;
+}
+
+int multiply(int a, int b)
+{
+    return a * b;
+}
+
+int substract(int a, int b)
+{
+    return a - b;
+}
+```
+위의 경우 컴파일러는 순서대로 읽기 때문에 오류가 발생합니다
+
+따라서 정리를 하려면 아래와 같은 방식으로 하는것이 좋습니다
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+// 이방식을 전방 선언이라고 합니다
+int add(int a, int b);
+int multiply(int a, int b);
+int substract(int a, int b);
+
+int main()
+{
+    cout << add(1, 2) << endl
+    
+    return 0;
+}
+
+// 이부분은 정의가 됩니다
+int add(int a, int b)
+{
+    return a + b;
+}
+
+int multiply(int a, int b)
+{
+    return a * b;
+}
+
+int substract(int a, int b)
+{
+    return a - b;
+}
+```
+### 헤더파일 만들기
+
+지금 부터는 복잡해질 코드를 여러파일로 쪼개는 방법을 알아봅시다
+
+메인 함수는 그대로 두고 밑의 함수들을 잘라서 사용해봅시다
+
+아래는 따로 Calculate.cpp 파일을 제작하여 함수를 넣어둡니다
+
+```c++
+
+int add(int a, int b)
+{
+    return a + b;
+}
+
+int multiply(int a, int b)
+{
+    return a * b;
+}
+
+int substract(int a, int b)
+{
+    return a - b;
+}
+
+```
+
+그리고 새로 calculate.h로 헤더파일을 생성하여 안에 선언을 해줍니다 
+
+```c++
+#pragma once
+
+int add(int a, int b);
+
+```
+
+그리고 다시 메인 cpp 파일로 돌아가 맨위에 적어주면 인식하게 됩니다
+```c++
+
+#include <iostream>
+#include "calculate.h"
+
+using namespace std;
+
+int main()
+{
+    cout << add(1, 2) << endl
+    
+    return 0;
+}
+```
+
+만약 헤더파일의 위치를 변경할 경우
+
+Solution Explorer에서 "Remove"를 눌러 지운후
+
+로컬 폴더에서 드래그앤 드랍하여 새폴더를 생성하고 경로로 옮겨주려고 한다면
+
+[ #include "폴더이름/calculate.h" ] 와같은 식으로 경로도 지정해주게 되면 정상 작동합니다
+
+작업을 시작하기 전 가급적 .cpp파일과 .h파일은 구분 해두는것이 좋습니다
+
+### 헤더 가드가 필요한 이유
+
+먼저 LinKing error 대처법입니다
+
+컴파일러가 읽지만 못하게 하도록 cpp파일을 Remove로 삭제하고 빌드하면 
+
+파일을 찾지 못했다고 에러가 뜨게 되는데
+
+로컬 폴더에서 드래그드랍하여 다시 인식 시켜주면 정상화 됩니다
+
+이런 연결 오류는 개념적으로 많이 해보다 보면 익숙해 진다고 합니다
+
+다시 헤더가드 내용으로 넘어가면
+
+헤더파일을 새로 생성하면 #pragma once 라는 코드가 있는데 이것이 헤드가드입니다
+
+헤더파일을 include 하다보면 중복 되는 경우가 있는데 이때 오류를 방지해주는것이
+
+헤더가드로 중복된 경우 한번만 사용하게 합니다
+
+### 네임스페이스 (명칭공간)
+
+기능은 다르지만 같은 기능을 하는 함수를 만들고 싶은 경우 여러방법이 있지만
+
+이번엔 네임스페이스를 사용하여 구분하는 방법을 알아 보도록 합니다
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+namespace Var1
+{
+    int cal(int a, int b)
+    {
+        return a + b;
+    }
+}
+
+int cal(int a, int b)
+{
+    return a * b;
+}
+
+int main()
+{
+    // 네임스페이스 안의 함수를 지정하여 사용하려면 네임스페이스와 :: 뒤에 함수를 사용합니다
+    cout << Var1::cal(3, 5) << endl;
+    cout << cal(3, 5) << endl;
+
+    return 0;
+}
+```
+
+또한 네임스페이스 안에 또 네임스페이스를 넣을 수 있습니다
+
+마찬가지로 네임스페이스 옆에 :: 를 한번더 경로 지정하듯 사용하면 됩니다
+
+계속 사용하는 std 같은 경우 코드를 들어가 보면 namespace 코드가 없는데
+
+이는 전처리기를 사용한 매크로 기능이라는 개념만 가지고 다음 시간에 다뤄봅니다
+
+### 전처리기와의 첫 만남
+
+먼저 매크로의 사용법을 봅니다
+
+```c++
+#include <iostream>
+using namespace std;
+
+#define MY_NUMBER 9
+// 매크로 이름은 대문자로 하는것이 좋습니다
+
+int main()
+{
+    cout << MY_NUMBER << endl;
+    
+    return 0;
+}
+```
+
+요즘은 매크로를 안쓰는 추세고 그냥 함수를 쓰는게 좋습니다
+
+왜냐하면 이런 기능도 있기 때문입니다
+
+```c++
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	cout << std::max(1 + 3, 2) << endl;
+}
+```
+
+위와 같은 방법으로 간편하게 사용이 가능한 기능들이 있습니다
+
+네임스페이스는 사용하는 해당 중괄호 안에 선언해주는 것이 좋습니다
+
 ## 이번 과정을 마치며
 
-강의가 아직까진 기초적인 내용이지만 중간중간 굉장히 디테일한 내용들을 알려주시니까 만족도가 높습니다
+굉장히 자세하게 차근차근 알려주시는 느낌입니다 이 많은 강의를 들었지만
+
+아직 연산자들을 다루지도 않네요 하지만 뭔가 천천히 늘어가는 기분입니다
+
+꾸준히 학습해봐야겠네요
