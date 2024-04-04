@@ -1,12 +1,12 @@
 <!-- Heading -->
-#  스물네번째 도토리
+#  스물다섯번째 도토리
 
 <!-- Quote -->
-> ## 유니티 최적화 Batch 줄이기 학습
+> ## [C#과 유니티로 만드는 MMORPG 게임 개발 시리즈] Part2: 자료구조와 알고리즘
 >
-> ### [유니티 TIPS] 유니티 최적화를 위한 필수 기본기! Batching 방법 소개 영상
+> ### 섹션1 선형 자료 기초
 
-유튜브 Unity Korea의 골드메탈님의 강의 내용입니다
+Rookis님의 인프런 유료 강의를 들으며 작성한 글입니다.
 
 <br>
 안녕하세요 코드 지식이 모자라 다람쥐가 도토리 모으듯이 여기저기서 긁어 모아 사용하다가
@@ -15,94 +15,313 @@
 
 <br>
 
-취직하고 쭉 못올리다가 오랫만에 업로드하네요
+다니던 회사가 폐업을 하게되어 자유의 몸이 되었습니다!
+
+실업급여 기간 동안 이직 준비와 그동안 못들었던 강의를 들으며 해보고 싶었던 기능들을
+
+구현할 예정입니다. 블로그 업로드 빈도가 드디어 좀 생기겠네요
 
 <br>
 
-## Batch란 무엇인가?
+## 배열, 동적 배열, 연결 리스트
 
-### Draw Call
+이전 강의들과 여기까지 수강은 했는데 출퇴근길에 들어서 동적 배열 구현 연습부터 작성합니다!
 
-CPU에서 읽어들인 데이터를 GPU로 전달하여 그려내는 작업이 Draw Call
+## 동적 배열 구현 연습
 
-### SetPass Call
+C++ 에서는 Vector를 사용하지만 C#에서는 List(동적 배열) 혹은 LinkedList(연결 리스트)를 사용합니다
 
-Draw Call로 CPU가 GPU로 명령을 내릴때 따라오는 값을 Command Buffer 라고 한다
+기능을 비교해보면 LinkedList는 중간 삽입 작업이 용이 하다고 합니다.
 
-그중에 그래픽 계열 (Material,Shader 등) 을 묶어 놓은것이 SetPass Call
+동적 배열이 같는 장점은 배열 사이즈를 유동적으로 늘리거나 줄일 수 있습니다.
 
-이것을 그래픽뿐만 아니라 전부 함께 넘기는것이 Batch라고 합니다
+근데 예를들어 맵사이즈 같은 경우엔 변화가 거의 없으니 기본형태인 배열이 합리적입니다.
 
-## Batch에 해당되는 컴포넌트들
+~~(기초가 없는 저는 그냥 그런거 모르고 다 List썼습니다...)~~
 
-### Sprite Renderer
+동적 배열이나 연결 리스트를 사용할땐 우선 먼저 초기화를 고려 합니다.
 
-### Mesh Renderer
+class Board
+{
+    public int[] _data = new int[25]; // 배열
+    public List<int> _data2 = new List<int>(); // 동적 배열
+    public LinkedList<int> _data3 = new LinkedList<int>(); // 연결 리스트
 
-### Line Renderer
+    public void Initialize()
+    {
+        _data2.Add(101);
+        _data2.Add(102);
+        _data2.Add(103);
+        _data2.Add(104);
 
-### Trail Renderer
+        int temp = _data2[2];
+    }
+}
 
-### Particle System
+아주 기초적인 내용인데 우선 리스트는 0부터 시작하기 때문에 _data2 리스트의 index가 2인 값은 103이 됩니다.
 
-우선 각각 다른 Material을 가진 오브젝트들은
+값을 넣어봤으니 빼는것도 해봅니다
 
-Material이 다르기때문에 Batch 수가 그만큼 그대로 존재합니다
+class Board
+{
+    public int[] _data = new int[25]; // 배열
+    public List<int> _data2 = new List<int>(); // 동적 배열
+    public LinkedList<int> _data3 = new LinkedList<int>(); // 연결 리스트
 
-따라서 Atlas로 Texture를 하나로 합친후에 하나의 Material을 만든후에 UV좌표를 수정하여 하나의 Material로
+    public void Initialize()
+    {
+        _data2.Add(101);
+        _data2.Add(102);
+        _data2.Add(103);
+        _data2.Add(104);
 
-만들면 Batch수는 그대로지만 SetPass Call은 1개만 사용하게 됩니다
+        int temp = _data2[2];
 
-## Dynamic Batching (동적 배칭)
+        _data2.RemoveAt(2);
+    }
+}
 
-우선 Preference로 가서 Core Render Pipeline에서
+이번에도 마찬가지로 예를들어 List에 RemoveAt(2)을 사용하게되면 index가 2이므로
 
-Additional Properties에 Visibility를 All Visible로
+3번째 데이터가 사라지게 됩니다.
 
-Project Settings에 Rendering 항목을보면 Render Pipeline Asset으로 확인 할 수 있음
+빠른 이해를 위해 다른 동적 배열을 구현 해봅니다.
 
-(글보단 영상이 더 자세하니 링크 참조 해주세요)
+class MyList<T>
+{
+    const int DEFAULT_SIZE = 1;
 
-Dynamic Batcing을 실행하면 Saved by batching에 한개를 제외한 나머지 오브젝트 수 만큼
+    T[] _data = newT[1];
 
-Saved by batching 됐다고 뜹니다 Batch 카운트도 1개네요
+    public int Count = 0; // 실제로 사용중인 데이터 개수
+    public int Capacity {get {return _data.Length;}} // 예약된 데이터 개수
+}
 
-주의해야할점은 정점 속성을 900개 이상 가지거나 225개 이상의 정점을 포함하는 Mesh에는 사용이 불가능 합니다
+지금은 _data 배열의 크기와 Capacity 값이 같도록 해준다
 
-근데 Sprite Atlas는 이미 동적 배칭이다
+이코드에서 _data 배열에 데이터를 추가하는 것은 매우 번거롭다.
 
-## Static Batching (정적 배칭)
+class MyList<T>
+{
+    const int DEFAULT_SIZE = 1;
+    T[] _data = newT[DEFAULT_SIZE];
 
-마찬가지로 설정에서 Static Batching을 켜주고 확인을 해보면 Batch Count는 확실히 줄어있지만
+    public int Count = 0; // 실제로 사용중인 데이터 개수
+    public int Capacity {get {return _data.Length;}} // 예약된 데이터 개수
 
-여러 매시들의 정점을 하나로 통합하였기 때문에
+    public void Add(T item)
+    {
+        // 먼저 배열에 공간이 남아 있는지 확인
+        if(Count >= Capacity)
+        {
+            // 배열의 크기를 늘려서 공간 확보
+            T[] newArray = new T[Count * 2];
 
-정적 배칭이므로 오브젝트가 움직이지 않습니다
+            // 기존 데이터를 
+            for(int i = 0; i < Count; i++>)
+                newArray[i] = _data[i];
 
-## SRP Batching
+            _data = newAAray
+        }
+        
+        // 확보된 공간에 데이터를 넣어준다
+        _data[Count] = item;
+        Count++;
+    }
+}
 
-이번에도 설정에서 SRP Batcher를 선택한 후 확인 해보면 Batch Count는 그대로지만
+아니 그동안 편하게 List만 주구장창 써온 이유가 있었네요 일반 배열은 동적 배열인 List와
 
-SetPass Call은 줄어있습니다 그런데 놀라운건 오브젝트들이 각각 다른 Material을 쓰고있다는 거죠
+다르게 정적이기 때문에 배열의 크기를 조절하게 될경우 굉장히 번거로운 과정을 거칩니다.
 
-단! 여기에는 조건이 붙습니다 Material이 달라도 하나의 셰이더만을 사용해야 한다는거죠
+### 갑자기 생긴 궁금증
 
-그리고 셰이더를 선택하면 인스펙터 화면에서 SRP Batcher의 사용 가능 여부를 볼 수 있습니다
+저는 멍청해서 지금까지 그냥 다 List를 사용했는데 그렇다면 저렇게 번거로운 일반 배열을
 
-## GPU Instancing
+사용해야 할때는 언제고 장점은 무엇일까? 빠른 답을 얻기 위해 GPT에게 물어봤습니다.
 
-이번엔 극도로 줄일 수 있는 방법입니다 이번엔 줄일 셰이더의 SRP Batcher를 끄고 (SRP가 호환하지 않는다면 안꺼도 된다)
+메모리 사용량: 일반 배열은 List에 비해 적은 메모리를 사용합니다. List는 내부적으로 배열을 기반으로 하지만, 더 많은 메타데이터를 관리하기 위해 추가 메모리를 사용합니다.
 
-줄일 셰이더에 Advanced Options에 Enable GPU Instancing을 체크하면 놀랍게도 Batch Count가 1입니다
+속도: 일반 배열은 List에 비해 더 빠릅니다. List는 요소를 추가하거나 제거할 때 동적으로 크기를 조절하고 복사해야 할 수 있으므로, 배열보다 느릴 수 있습니다.
 
-CPu가 하나의 Mesh만 읽어서 그걸 GPU에 넘기고 GPU는 메모리 안에서 저장된 값으로 동일한 Mesh를 그려나가는 방식입니다
+크기 변경: 배열은 한 번 생성되면 크기를 변경할 수 없지만, List는 동적으로 크기를 조절할 수 있습니다. 따라서 크기가 변경되는 작업이 자주 발생하지 않는 경우에는 배열을 사용하는 것이 더 효율적입니다.
 
-대부분의 일을 GPU가 하게 되는거죠 근데 정말 수많은 Mesh를 만들어도 Count가 1은 아니고 어느정도 허용치를 넘어가면
+가독성: 배열은 간단하고 직관적입니다. List는 여러 가지 메서드를 제공하여 요소를 추가, 제거, 정렬 및 검색하는 등의 작업을 보다 쉽게 할 수 있습니다. 따라서 코드의 목적과 요구 사항에 따라 가독성을 고려하여 선택해야 합니다.
 
-Count가 1씩 증가하게 됩니다
+음 자세히 알려줬는데 제가 간단히 이해한 내용은 배열의 크기 조절을 할일이 없는 경우
+
+메모리 사용량, 속도에서 이득을 보기 위해 사용하네요
+
+~~(그치만 요즘 컴퓨터는 너무 성능이 좋아서 List 다 때려박아도 잘 돌아갔었군요)~~
+
+그리고 간단한 팁이지만 정적 배열에서 값을 관리할때
+
+public T this[int index]
+{
+    get { return _data[index];}
+    Set { _data[index] = value}
+}
+
+이런식으로 하면 get으로는 this[] 안에 인덱스 번호만 넣으면 해당하는 값을 리턴 받고
+
+set으로는 해당하는 인덱스의 값을 value로 지정할 수 있네요
+
+~~(이거랑 완전 같진 않지만 List충인 저는 그냥 List[i]값 디버그로 봤어요)~~
+
+정적 배열에서 값을 빼줄때는
+
+public void RemoveAt(int index)
+{
+    // 해당하는 인덱스의 값의 뒤에 값들을 한칸씩 땡긴 후
+    for(int i = 0; index; i < Count - 1; i++)
+        _data[i] = _data[Count + 1];
+
+    // 맨끝의 값을 default값으로 대체합니다
+    _data[Count - 1] = default(T);
+
+    Count--;
+}
+
+근데 이 코드의 결과가 101 102 103 104 105 가 정적 배열로 있을때
+
+103을 빼게 되면 결국 101 102 104 105 0 이런식으로 되는데
+
+동적 배열인 List쓸때는 그냥 쏙 빼버리고 사이즈도 줄었었죠
+
+~~(역시 감사할줄 아는것도 그 이유를 알아야 하네요 새삼 고맙다 List야...)~~
+
+자 이번엔 방금 사용했던 정적배열을 관리하는 기능들을 동적배열에서도 똑같은 기능을 구현 해봅니다.
+
+동적 배열에서 값 지정할때
+
+int temp = _data2[2]; ~~(딸깍)~~
+
+동적 배열에서 값 제거할때
+
+int temp = _data2.RemoveAt(2); ~~(딸깍)~~
+
+그리고 정적 배열의 시간 복잡도 보면
+
+당연하게도 정적배열은 대부분 0(1) (방금 사용했던 코드는 예외)
+
+for문을 한바퀴 사용하는 정적배열의 RemoveAt은 0(N) 의 시간복잡도를 가집니다.
+
+### 갑자기 생긴 궁금증
+
+위에서 딸깍 했던 리스트의 시간 복잡도는 안알려주셔서 찾아봤습니다.
+
+List의 값을 수정하는 코드는 정적 배열과 마찬가지로 0(1) 이었고
+
+List의 값을 제거하는 코드도 정적 배열고 마찬가지로 0(N) 이었습니다.
+
+~~(이래서 그동안 그냥 List 때려박아도 문제 없었나..?)~~
+
+## 연결 리스트 구현 연습
+
+이번엔 앞서 언급했던 LinkedList를 다뤄봅니다.
+
+class Room<T>
+{
+    public T Data;
+    public Room<T> Next;
+    public Room<T> Prev;
+}
+
+class RoomList<T>
+{
+    public Room<T> Head;
+    public Room<T> Tail;
+    public int Count = 0;
+
+    public Room<T> AddLast(T data)
+    {
+        Room<T> newRoom = new Room<T>();
+        newRoom.Data = data;
+
+        // 만약 아직 방이 아예 없다면 새로 추가한 방을 첫번째 방으로 지정
+        if(Head == null)
+            Head = newRoom;
+
+        // 기존의 마지막 방과 새로 추가되는 방을 연결
+        if(Tail != null)
+        {
+            Tail.Next = newRoom;
+            newRoom.Prev = Tail;
+        }
+
+        // 새로 추가되는 방을 마지막 방으로 지정
+        Tail = newRoom;
+        Count++;
+        return newRoom;
+    }
+
+    public void Remove(Room<T> room)
+    {
+        // 기존의 첫번째 방의 다음방을 첫번째 방으로 지정 ex) 2 => 1
+        if(Head == room)
+            Head = Head.Next;
+
+        // 기존의 마지막 이전의 방을 마지막 방으로 지정 ex) 끝번호 - 1 => 끝번호
+        if(Tail == room)
+            Tail = Tail.Prev;
+
+        if(room.Prev != null)
+            room.Prev.Next = room.Next;
+
+        if(room.Next != null)
+            room.Next.Prev = room.Prev;
+    }
+}
+
+class Board
+{
+    public int[] _data = new int[25]; // 정적 배열
+    public LinkedList<int> _data3 = new LinkedList<int>(); // 연결 리스트
+
+    public void Initialize()
+    {
+        _data3.AddLast(101);
+        _data3.AddLast(102);
+        LinkedListNode<int> node = _data3.AddLast(103);
+        _data3.AddLast(103);
+        _data3.AddLast(104);
+
+        _data3.Remove(node);
+    }
+}
+
+코드를 보면 기존 Add가 아닌 AddLast를 쓰게되며
+
+중간에는 node 라는걸 사용해서 관리를 하고 있는데
+
+이는 LinkedList는 기존 배열과는 조금 다른 주소값으로 관리하고
+
+쭉 이어주는 느낌이라서 처음 값과 끝 값을 항상 알고 있어야 한다
+
+어딘가 끊어지면 그 값의 양옆을 연결 해주는 느낌이다.
+
+### 갑자기 생긴 궁금증
+
+LinkedList는 써본적이 없는데 언제 왜 쓰고 장단점이 무엇일까?
+
+GPT에게 물어보니
+
+LinkedList:
+
+LinkedList는 각 요소가 자신의 이전 요소와 다음 요소를 가리키는 노드로 구성됩니다.
+임의의 위치에서 요소의 삽입 및 삭제가 빠릅니다(O(1)).
+인덱스 접근이 불가능하며 요소를 찾기 위해서는 리스트를 순회해야 합니다.
+각 요소가 추가적인 포인터를 가지고 있어 메모리 사용량이 더 많습니다.
+요소의 삽입 및 삭제가 빈번하고, 순회가 자주 필요하지 않은 경우에 적합합니다.
+
+한번더 정리하면 주소 개념이기에 인덱스 접근이 불가능하고 그렇기 때문에
+
+리스트를 순회해야 하는 단점이 있지만 하나의 요소를 직접 지정하여 삽입 삭제하는데
+
+쓰인다고 합니다.
 
 ## 이번 과정을 마치며
 
-모바일은 최적화가 생명이니 이것저것 더 알아봐야겠어요
+이번에도 당연하게 써오던 것들이 왜 어떻게 편한지 알게 됐고 LinkedList는...
 
-
+한번도 안써봤는데 나중에 삽입 삭제만 사용하는 배열을 사용할때 써봐야 겠습니다.
